@@ -1,0 +1,5 @@
+{
+{% for group in list_groups.json %}
+  "{{group.bsdgrp_group}}": {"id": {{ group.id }}, "gid": {{group.bsdgrp_gid}}},
+{% endfor %}
+}

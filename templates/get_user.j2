@@ -1,0 +1,5 @@
+{
+{% for user in list_users.json %}
+  "{{user.bsdusr_username}}": {"id": {{ user.id }}, "uid": {{user.bsdusr_uid}}},
+{% endfor %}
+}

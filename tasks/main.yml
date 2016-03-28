@@ -1,0 +1,85 @@
+---
+  - name: "Pass 1: Get Groups"
+    uri:
+      url: "{{freenas_group_url}}"
+      return_content: yes
+      url_username: "{{freenas_username}}"
+      url_password: "{{freenas_password}}"
+      method: GET 
+      timeout: 360
+      status_code: 200,409
+    register: list_groups
+
+  - set_fact:
+      freenas_groups: "{{ lookup('template', './get_group.j2') }}"
+
+  - name: Create Groups
+    uri:
+      url: "{{freenas_group_url}}"
+      return_content: yes
+      url_username: "{{freenas_username}}"
+      url_password: "{{freenas_password}}"
+      method: POST
+      body: '{"bsdgrp_gid": "{{item.gid}}", "bsdgrp_group": "{{item.name}}"}'
+      body_format: json
+      headers:
+        Content-Type: "application/json"
+      timeout: 360
+      status_code: 200,409
+    register: create_groups
+    when: not (item.name in {{freenas_groups}})
+    with_items: "{{freenas_group_list}}"
+
+  - name: "Pass 2: Get Groups"
+    uri:
+      url: "{{freenas_group_url}}"
+      return_content: yes
+      url_username: "{{freenas_username}}"
+      url_password: "{{freenas_password}}"
+      method: GET 
+      timeout: 360
+      status_code: 200,409
+    register: list_groups
+
+  - set_fact:
+      freenas_groups: "{{ lookup('template', './get_group.j2') }}"
+
+  - name: "Pass 1: Get Users"
+    uri:
+      url: "{{freenas_user_url}}"
+      return_content: yes
+      url_username: "{{freenas_username}}"
+      url_password: "{{freenas_password}}"
+      method: GET 
+      timeout: 360
+      status_code: 200,409
+    register: list_users
+
+  - set_fact:
+      freenas_users: "{{ lookup('template', './get_user.j2') }}"
+
+  - name: Create Users
+    uri:
+      url: "{{freenas_user_url}}"
+      url_username: "{{freenas_username}}"
+      url_password: "{{freenas_password}}"
+      method: POST
+      body: '{
+        "bsdusr_username": "{{item.name}}",
+        "bsdusr_full_name": "{{item.name}}",
+        "bsdusr_password": "{{item.password}}",
+        "bsdusr_uid": {{item.uid}},
+        "bsdusr_group": {{freenas_groups[item.group].id}},
+        "bsdusr_creategroup": false
+        }'
+      body_format: json
+      headers:
+        Content-Type: "application/json"
+      timeout: 360
+      status_code: 200,409
+      return_content: yes
+    register: create_users
+    when: not (item.name in {{freenas_users}})
+    with_items: "{{freenas_user_list}}"
+ 
+  - debug: var=create_users
