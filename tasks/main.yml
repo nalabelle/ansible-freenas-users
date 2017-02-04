@@ -79,7 +79,7 @@
       status_code: 200,409
       return_content: yes
     register: create_users
-    when: not (item.name in {{freenas_users}})
+    when: not (item.name in freenas_users)
     with_items: "{{freenas_user_list}}"
  
   - debug: var=create_users
