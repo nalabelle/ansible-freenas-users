@@ -27,7 +27,7 @@
       timeout: 360
       status_code: 200,409
     register: create_groups
-    when: not (item.name in {{freenas_groups}})
+    when: not (item.name in freenas_groups)
     with_items: "{{freenas_group_list}}"
 
   - name: "Pass 2: Get Groups"
