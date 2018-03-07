@@ -81,5 +81,3 @@
     register: create_users
     when: not (item.name in freenas_users)
     with_items: "{{freenas_user_list}}"
- 
-  - debug: var=create_users
