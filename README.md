@@ -1,4 +1,4 @@
-Role Name
+ansible-freenas-users
 =========
 
 Sets up users and groups in [FreeNAS](http://www.freenas.org/)
@@ -13,7 +13,8 @@ Role Variables
 
 Variables along with defaults:
 
-    # Sets the hostname for the server. Localhost is fine if you're running it on the server directly. You can also delegate to local and it'll work if you specify the actual host here.
+    # Sets the hostname for the server. Localhost is fine if you're running it on the server directly.
+    # You can also delegate to local and it'll work if you specify the actual host here.
     freenas_hostname: "localhost"
     # Customize the urls to the API if needed, should be okay as is.
     freenas_group_url: "http://{{ freenas_hostname }}/api/v1.0/account/groups/?format=json"
@@ -25,7 +26,7 @@ Variables along with defaults:
 
 To specify users and groups:
 
-    freenas_create_users:
+    freenas_user_list:
       - name: myusername
         password: hunter2
         uid: 900
