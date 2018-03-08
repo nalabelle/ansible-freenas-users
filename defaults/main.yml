@@ -1,6 +1,7 @@
 ---
 # defaults file for freenas-users
-freenas_group_url: "http://localhost/api/v1.0/account/groups/?format=json"
-freenas_user_url: "http://localhost/api/v1.0/account/users/?format=json"
-freenas_user_list: [] 
+freenas_hostname: "localhost"
+freenas_group_url: "http://{{ freenas_hostname }}/api/v1.0/account/groups/?format=json"
+freenas_user_url: "http://{{ freenas_hostname }}/api/v1.0/account/users/?format=json"
+freenas_user_list: []
 freenas_group_list: []

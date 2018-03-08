@@ -1,38 +1,61 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+Sets up users and groups in [FreeNAS](http://www.freenas.org/)
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+a FreeNAS server.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Variables along with defaults:
+
+    # Sets the hostname for the server. Localhost is fine if you're running it on the server directly. You can also delegate to local and it'll work if you specify the actual host here.
+    freenas_hostname: "localhost"
+    # Customize the urls to the API if needed, should be okay as is.
+    freenas_group_url: "http://{{ freenas_hostname }}/api/v1.0/account/groups/?format=json"
+    freenas_user_url: "http://{{ freenas_hostname }}/api/v1.0/account/users/?format=json"
+    # List of users
+    freenas_user_list: []
+    # List of groups
+    freenas_group_list: []
+
+To specify users and groups:
+
+    freenas_create_users:
+      - name: myusername
+        password: hunter2
+        uid: 900
+        group: myusers
+        email: "myusername@example.com"
+    freenas_group_list:
+      - name: myusers
+        gid: 9000
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None, uses the uri built in.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Note: if you run this on the FreeNas server instead of using `connection: local`, you'll likely need to set `ansible_python_interpreter: /usr/local/bin/python` for the host
 
+    ---
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+        - ansible-freenas-users
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+https://github.com/nalabelle

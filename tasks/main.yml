@@ -5,7 +5,7 @@
       return_content: yes
       user: "{{freenas_username}}"
       password: "{{freenas_password}}"
-      method: GET 
+      method: GET
       timeout: 360
       status_code: 200,409
     register: list_groups
@@ -36,7 +36,7 @@
       return_content: yes
       user: "{{freenas_username}}"
       password: "{{freenas_password}}"
-      method: GET 
+      method: GET
       timeout: 360
       status_code: 200,409
     register: list_groups
@@ -50,7 +50,7 @@
       return_content: yes
       user: "{{freenas_username}}"
       password: "{{freenas_password}}"
-      method: GET 
+      method: GET
       timeout: 360
       status_code: 200,409
     register: list_users
